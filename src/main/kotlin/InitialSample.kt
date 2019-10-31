@@ -22,6 +22,7 @@ fun main() {
     println("#####\n")
 
     coroutineScopeSample()
+    doHelloWorld()
 }
 
 fun helloWorld() {
@@ -96,4 +97,19 @@ fun coroutineScopeSample() = runBlocking {
         println("1. task from coroutineScope")
     }
     println("4. scope ended.")
+}
+
+var scope: CoroutineScope? = null
+fun doHelloWorld() = runBlocking() {
+    scope = this
+    doWorld()
+    println("Hello,")
+}
+
+//forcibly use parent scope
+fun doWorld() {
+    scope?.launch {
+        delay(100L)
+        println("World")
+    }
 }
