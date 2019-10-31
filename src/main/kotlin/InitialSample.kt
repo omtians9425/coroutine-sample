@@ -7,6 +7,8 @@ fun main() {
     helloWorld()
     println("#####")
     helloWorldWithBlocking()
+    println("#####")
+    helloWorldWaiting()
 }
 
 fun helloWorld() {
@@ -26,4 +28,13 @@ fun helloWorldWithBlocking() = runBlocking { //main coroutine
     }
     println("Hello,")
     delay(2000L)
+}
+
+fun helloWorldWaiting() = runBlocking{
+    val job = GlobalScope.launch {
+        delay(1000L)
+        println("World")
+    }
+    println("Hello,")
+    job.join()
 }
