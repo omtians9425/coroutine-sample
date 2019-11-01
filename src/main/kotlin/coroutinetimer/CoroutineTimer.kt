@@ -17,8 +17,8 @@ var count = 0
 fun startTimer(interval: Long, timeLimit: Long = 2500L, endCondition: () -> Boolean, block: () -> Unit) = runBlocking {
     val job = launch {
         while (!endCondition()) {
-            delay(interval)
             block()
+            delay(interval)
         }
     }
     delay(timeLimit)
