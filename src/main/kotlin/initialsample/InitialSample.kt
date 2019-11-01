@@ -60,7 +60,7 @@ fun helloWorldWithWaiting() = runBlocking{
  * Structured Concurrency version.
  * A New Coroutine is build using the scope of its parent coroutine so there is no need to join() explicitly.
  * The parent coroutine waits for all coroutines that start in parent(or its child) scope to complete.
- * This principle also enables make error handling more easy.
+ * This principle also makes error handling easier.
  */
 fun helloWorldWithStructuredConcurrency() = runBlocking { //parent, main coroutine
     launch {//"this" is omitted
