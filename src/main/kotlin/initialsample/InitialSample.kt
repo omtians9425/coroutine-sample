@@ -3,23 +3,23 @@ package initialsample
 import kotlinx.coroutines.*
 
 fun main() {
-    println("#####initialSample.helloWorld")
+    println("#####helloWorld")
     helloWorld()
     println("#####\n")
 
-    println("#####initialSample.helloWorldWithBlocking")
+    println("#####helloWorldWithBlocking")
     helloWorldWithBlocking()
     println("#####\n")
 
-    println("#####initialSample.helloWorldWithWaiting")
+    println("#####helloWorldWithWaiting")
     helloWorldWithWaiting()
     println("#####\n")
 
-    println("#####initialSample.helloWorldWithStructuredConcurrency")
+    println("#####helloWorldWithStructuredConcurrency")
     helloWorldWithStructuredConcurrency()
     println("#####\n")
 
-    println("#####initialSample.helloWorldWithStructuredConcurrency2")
+    println("#####helloWorldWithStructuredConcurrency2")
     helloWorldWithStructuredConcurrency2()
     println("#####\n")
 
@@ -36,8 +36,8 @@ fun helloWorld() {
     Thread.sleep(200L)
 }
 
-fun helloWorldWithBlocking() = runBlocking { //initialSample.errorhandling.main coroutine
-    GlobalScope.launch { //new coroutine that doesn't block initialSample.errorhandling.main coroutine/
+fun helloWorldWithBlocking() = runBlocking { //main coroutine
+    GlobalScope.launch { //new coroutine that doesn't block main coroutine/
         println("suspended")
         delay(100L)
         println("World")
@@ -62,7 +62,7 @@ fun helloWorldWithWaiting() = runBlocking{
  * The parent coroutine waits for all coroutines that start in parent(or its child) scope to complete.
  * This principle also enables make error handling more easy.
  */
-fun helloWorldWithStructuredConcurrency() = runBlocking { //parent, initialSample.errorhandling.main coroutine
+fun helloWorldWithStructuredConcurrency() = runBlocking { //parent, main coroutine
     launch {//"this" is omitted
         delay(100L)
         println("World")
@@ -70,7 +70,7 @@ fun helloWorldWithStructuredConcurrency() = runBlocking { //parent, initialSampl
     println("Hello,")
 }
 
-fun helloWorldWithStructuredConcurrency2() = runBlocking { //parent, initialSample.errorhandling.main coroutine
+fun helloWorldWithStructuredConcurrency2() = runBlocking { //parent, main coroutine
     /**
      *  This is also a coroutine builder that creates a new scope.
      *  This blocks parent coroutine except for new coroutines created in this coroutine.
