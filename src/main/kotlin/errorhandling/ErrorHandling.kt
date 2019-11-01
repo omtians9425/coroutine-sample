@@ -13,6 +13,7 @@ suspend fun doHello() {
     println("Hello")
 }
 
+@Suppress("UNREACHABLE_CODE")
 suspend fun doWorld() {
     delay(200L)
     throw IOException("cancel coroutine") //throws exception in order to cancel coroutine forcibly.
