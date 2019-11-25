@@ -25,6 +25,9 @@ fun main() {
 
     coroutineScopeSample()
     doHelloWorld()
+
+    withContextSample()
+    withContextSample2()
 }
 
 fun helloWorld() {
@@ -114,4 +117,27 @@ fun doWorld() {
         delay(100L)
         println("World")
     }
+}
+
+fun withContextSample() = runBlocking {
+    launch {
+        println("START with context")
+        val a = withContext(Dispatchers.IO) { //if Main, the result is not displayed
+            println("WITHIN with context")
+            1
+        }
+        println("world. $a")
+    }
+    println("Hello, ")
+}
+
+fun withContextSample2() = runBlocking {
+    coroutineScope {
+        println("Hello, ")
+        val a = withContext(Dispatchers.IO) { //if Main, the result is not displayed
+            println("WITHIN with context")
+            1
+        }
+    }
+    println("World")
 }
