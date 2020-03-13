@@ -2,11 +2,13 @@ package errorhandling
 
 import kotlinx.coroutines.*
 import java.io.IOException
+import java.lang.AssertionError
 
 fun main() {
     notCrash()
     alsoOk()
-    crash()
+//    crash()
+    recallAlreadyCancelledScope()
 }
 
 suspend fun doHello() {
@@ -86,5 +88,22 @@ fun alsoOk() {
         }
     } catch (e: IOException) {
         println("handle cancel!! $e")
+    }
+}
+
+// Anti pattern: Once scope is cancelled, you won’t be able to launch new coroutines in the cancelled scope.
+fun recallAlreadyCancelledScope() {
+    val handler = CoroutineExceptionHandler { _, _ ->
+        println("error") // called infinitely.
+    }
+    val scope = CoroutineScope(Job() + handler)
+    var count = 0
+    while (true) {
+        val job = scope.launch {
+            count++
+            if (count % 2 == 0) throw AssertionError("") // dies here
+            println("increment")
+        }
+        println("scope status. isActive: ${scope.isActive}.")
     }
 }
