@@ -5,6 +5,7 @@ import java.io.IOException
 
 fun main() {
     notCrash()
+    alsoOk()
     crash()
 }
 
@@ -64,5 +65,26 @@ fun notCrash() = runBlocking {
         } catch (e: IOException) {
             println("handle cancel!! $e")
         }
+    }
+}
+
+// forcibly (brute force) catching: wrap the most outer scope by try-catch
+fun alsoOk() {
+    try {
+        runBlocking {
+            launch {
+                val hello = async {
+                    doHello()
+                }
+                val world = async {
+                    doWorld()
+                }
+                hello.await()
+                world.await()
+
+            }
+        }
+    } catch (e: IOException) {
+        println("handle cancel!! $e")
     }
 }
