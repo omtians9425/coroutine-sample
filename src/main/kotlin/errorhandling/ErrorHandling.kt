@@ -8,7 +8,9 @@ fun main() {
     notCrash()
     alsoOk()
 //    crash()
-    recallAlreadyCancelledScope()
+//    recallAlreadyCancelledScope()
+
+    applicationScopeSample()
 }
 
 suspend fun doHello() {
@@ -106,4 +108,27 @@ fun recallAlreadyCancelledScope() {
         }
         println("scope status. isActive: ${scope.isActive}.")
     }
+}
+
+fun applicationScopeSample() {
+    // larger scope. ex:  "application scope" that defined at Application class
+    // SupervisorJobは下のキャンセルとは無関係だが、他のクライアントがこのスコープで例外を投げた場合に処理が止まらないようにできる
+    val externalScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    // Smaller scope. ex: viewModelScope
+    val innerScope = CoroutineScope(Job())
+
+    val job = innerScope.launch {
+        println("something operation")
+        delay(100L)
+
+        // not canceled by innerScope's cancel
+        externalScope.launch {
+            delay(600L)
+            println("very important operation")
+        }.join()
+    }
+    Thread.sleep(500L)
+    job.cancel()
+    Thread.sleep(500L)
 }
