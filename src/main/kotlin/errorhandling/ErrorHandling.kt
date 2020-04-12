@@ -118,17 +118,17 @@ fun applicationScopeSample() {
     // Smaller scope. ex: viewModelScope
     val innerScope = CoroutineScope(Job())
 
-    val job = innerScope.launch {
+    val innerJob = innerScope.launch {
         println("something operation")
         delay(100L)
 
         // not canceled by innerScope's cancel
         externalScope.launch {
             delay(600L)
-            println("very important operation")
+            println("very important operation") // This should be shown
         }.join()
     }
     Thread.sleep(500L)
-    job.cancel()
+    innerJob.cancel()
     Thread.sleep(500L)
 }
